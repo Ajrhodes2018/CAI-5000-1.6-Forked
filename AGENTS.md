@@ -35,7 +35,9 @@ Deliverables:
 - docs/CHANGELOG_PR2.md: file-by-file “what changed + why”.
 - docs/TEST_BASE.md: numbered test steps + “good” criteria + acceptable warnings.
 - If build can run in the environment: run it and record command + result.
-  If it cannot: STOP and provide a local build checklist.
+- If it cannot: STOP and provide a local build checklist.
+-Build must succeed in Codex environment (or explain why environment can’t build).
+-Ensure output DLL ends up in Assemblies/ (or document exact expected location).
 
 ## PR description format
 - Summary (2–4 bullets)
