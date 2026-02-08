@@ -1,55 +1,45 @@
-# AGENTS.md — RimWorld Mod Update (Target: 1.6.x + all DLC)
+# AGENTS.md — RimWorld Base Mod Update (Target: 1.6.x + all DLC)
 
 ## Audience
-Assume maintainer is a newcomer. Prefer explicit steps and checklists.
+Maintainer is a newcomer. Use explicit steps, checklists, and verification criteria.
 
-## Goals (in order)
-G1) Audit the mod and produce a migration plan.
-G2) Upgrade the BASE mod to RimWorld 1.6.x (all DLC) with minimal behavior change.
-G3) Create a SEPARATE Combat Extended compatibility patch mod.
-G4) Create a SEPARATE RimWar compatibility patch mod.
+## Goal
+Upgrade THIS base mod to RimWorld 1.6.x (all DLC) with minimal behavior change.
 
 ## Non-negotiables
-- Do NOT rebalance gameplay or add features unless asked.
-- Keep mod/package IDs stable for the base mod.
 - Minimal diffs: no refactors/renames/reformatting unless required to fix errors.
-- Separate PRs only. Never mix G2/G3/G4 in one PR.
+- Do NOT rebalance gameplay or add features unless explicitly asked.
+- Keep existing mod/package IDs stable unless 1.6 forces a change (if forced: STOP and explain).
+
+## Stop-and-ask rule (mandatory)
+If you cannot justify a change with at least ONE of:
+- successful build output, OR
+- RimWorld log evidence / reproducible error, OR
+- authoritative documentation,
+THEN STOP and present 2–3 options with pros/cons and ask for the minimum missing info.
+Do not guess.
 
 ## Required PR sequence
-PR1: AUDIT (no functional changes)
+PR1: AUDIT + BUILD MODEL DETECTION (no functional changes)
 Deliverables:
-- Architecture map: folders, assemblies, Harmony patches, XML defs.
-- “Breakage list” for RimWorld 1.6 (compile + XML + runtime).
-- Migration checklist with estimated difficulty per item.
+- docs/AUDIT.md:
+  - repo map (folders, assemblies, Harmony patches, XML defs)
+  - build model: .sln/.csproj vs DLL-only, and exact build steps if determinable
+  - RimWorld 1.6 breakpoints list (compile + XML + runtime)
+  - migration checklist (blocking/risky/easy)
+- No gameplay/logic changes in PR1.
 
 PR2: BASE MOD UPGRADE to 1.6.x
 Deliverables:
-- Fix compile/API breaks and XML issues.
-- Behavior preserved unless 1.6 forces change.
-- Change log: file-by-file bullet list explaining WHY each change happened.
-- Test checklist + expected log output (what “good” looks like).
+- Fix compile/API breaks and XML issues; preserve behavior unless forced.
+- docs/CHANGELOG_PR2.md: file-by-file “what changed + why”.
+- docs/TEST_BASE.md: numbered test steps + “good” criteria + acceptable warnings.
+- If build can run in the environment: run it and record command + result.
+  If it cannot: STOP and provide a local build checklist.
 
-PR3: COMBAT EXTENDED PATCH MOD (separate mod)
-Deliverables:
-- New patch mod under /Patches/CombatExtended/
-- Uses targeted XML PatchOperations; avoid overwriting entire defs.
-- Clear dependency/load-order notes.
-- Test checklist: base only vs base+CE.
-
-PR4: RIMWAR PATCH MOD (separate mod)
-Deliverables:
-- New patch mod under /Patches/RimWar/
-- Targeted patches only.
-- Dependency/load-order notes.
-- Test checklist: base only vs base+RimWar.
-
-## If uncertain
-- Stop and present 2–3 options with pros/cons instead of guessing.
-- Prefer the smallest safe change.
-
-## Output format for PR descriptions
+## PR description format
 - Summary (2–4 bullets)
-- What changed (bullets, grouped by folder)
+- What changed (grouped by folder)
 - Why (short)
-- How to test (numbered steps)
+- How to test (numbered)
 - Known risks / follow-ups
